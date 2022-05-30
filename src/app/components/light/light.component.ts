@@ -17,7 +17,7 @@ export class LightComponent implements OnInit, AfterViewInit {
     // Update sizes
     this.sizes.width = window.innerWidth
     this.sizes.height = window.innerHeight
-    console.log('hahaa');
+    console.log('hahaa', window.innerWidth);
     
     // Update camera
     this.camera.aspect = this.canvas.clientWidth / this.canvas.clientHeight;

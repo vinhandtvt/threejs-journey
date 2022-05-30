@@ -2,6 +2,8 @@ import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild }
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
+import { GLTFLoader, GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
 
 @Component({
   selector: 'app-shadows',
@@ -36,7 +38,9 @@ export class ShadowsComponent implements OnInit, AfterViewInit {
   controls!: OrbitControls;
   renderer!: THREE.WebGLRenderer;
   clock: THREE.Clock = new THREE.Clock();
-  gui: dat.GUI = new dat.GUI();;
+  gui: dat.GUI = new dat.GUI();
+  private loaderGLTF = new GLTFLoader();
+  model: any;
 
   constructor() { }
 
@@ -59,14 +63,15 @@ export class ShadowsComponent implements OnInit, AfterViewInit {
     /**
      * Objects
      */
-    this.initObjects();
+    // this.initObjects();
+    this.loadModel()
 
     /**
      * Camera
      */
     this.loadCamera();
 
-    this.addCameraHelper();
+    // this.addCameraHelper();
 
     // Controls
     this.loadControls();
@@ -77,6 +82,25 @@ export class ShadowsComponent implements OnInit, AfterViewInit {
 
 
     this.tick();
+  }
+
+  private loadModel() {
+    this.scene.background = new THREE.Color(0xC2DED1);
+    this.loaderGLTF.load(
+      'assets/test1/Map_Floating_Island.gltf',
+      (gltf: GLTF) => {
+        console.log(gltf);
+        
+        this.model = gltf.scene;
+        console.log(this.model);
+        var box = new THREE.Box3().setFromObject(this.model);
+        box.getCenter(this.model.position); // this re-sets the mesh position
+        this.model.position.multiplyScalar(-1);
+        this.model.position.set(-1, -1, -1)
+
+        this.scene.add(this.model);
+      }
+    );
   }
 
   private addCameraHelper(): void {
@@ -99,13 +123,13 @@ export class ShadowsComponent implements OnInit, AfterViewInit {
   private initLights(): void {
     // Ambient light
     this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
-    this.gui.add(this.ambientLight, 'intensity').min(0).max(1).step(0.001)
+    this.gui.add(this.ambientLight, 'intensity').min(0).max(5).step(0.001)
     this.scene.add(this.ambientLight)
 
     // Directional light
-    this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
+    this.directionalLight = new THREE.DirectionalLight(0xffffff, 1)
     this.directionalLight.position.set(2, 2, - 1)
-    this.gui.add(this.directionalLight, 'intensity').min(0).max(1).step(0.001)
+    this.gui.add(this.directionalLight, 'intensity').min(0).max(5).step(0.001)
     this.gui.add(this.directionalLight.position, 'x').min(- 5).max(5).step(0.001)
     this.gui.add(this.directionalLight.position, 'y').min(- 5).max(5).step(0.001)
     this.gui.add(this.directionalLight.position, 'z').min(- 5).max(5).step(0.001)
