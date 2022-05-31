@@ -37,7 +37,6 @@ export class FloatingIslandComponent implements AfterViewInit {
   
 
   @HostListener('click', ['$event']) onclick(event: MouseEvent): void {
-    console.log(this.currentIntersect.object);
     this.currentIntersect.object.material.color.set( Math.random() * 0xffffff )
     if (this.currentIntersect && this.currentIntersect.object.name === 'Icosphere002_2') {
       window.alert('you are fucking weird');
@@ -117,6 +116,7 @@ export class FloatingIslandComponent implements AfterViewInit {
 
   private loadModel() {
     this.scene.background = new THREE.Color(0xffe4f2);
+    console.log(this.loaderGLTF)
     this.loaderGLTF.load(
       'assets/test1/Map_Floating_Island.gltf',
       (gltf: GLTF) => {
