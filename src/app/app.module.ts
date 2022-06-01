@@ -8,10 +8,10 @@ import { ShadowsComponent } from './components/shadows/shadows.component';
 import { HauntedHouseComponent } from './components/haunted-house/haunted-house.component';
 import { FloatingIslandComponent } from './components/floating-island/floating-island.component';
 import { InteractiveLinesComponent } from './components/interactive-lines/interactive-lines.component';
-import { ThreeBaseComponent } from './directive/three-base.component';
-
-
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule } from '@angular/material/button';
+import { DialogComponent } from './components/light/dialog/dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -21,12 +21,16 @@ import { ThreeBaseComponent } from './directive/three-base.component';
     HauntedHouseComponent,
     FloatingIslandComponent,
     InteractiveLinesComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatDialogModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

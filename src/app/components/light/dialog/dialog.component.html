@@ -1,0 +1,15 @@
+<mat-dialog-content class="dialog-content">
+  <ng-container [ngSwitch]="data.island">
+    <span *ngSwitchCase="1">Welcome to Smart City Island</span>
+    <span *ngSwitchCase="2">Welcome to Mid Rock Island</span>
+    <span *ngSwitchCase="3">Welcome to Mountain Island</span>
+    <span *ngSwitchCase="4">Welcome to Ocean Island</span>
+    <span *ngSwitchCase="5">Welcome to Forest Island</span>
+    <span *ngSwitchDefault>Mission Complete! Go Home</span>
+  </ng-container>
+
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+	<button mat-raised-button mat-dialog-close tabindex="-1">Close</button>
+	<button *ngIf="data.island !== 6" mat-raised-button color="primary" (click)="onNextIsland()" tabindex="1">Next Island</button>
+</mat-dialog-actions>
