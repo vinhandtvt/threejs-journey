@@ -55,11 +55,9 @@ export class FloatingIslandComponent implements AfterViewInit {
         this.nextMountTain = 5;
         break;
       default:
+        this.nextMountTain = 10;
         break;
     }
-    console.log(this.activeMountain, 'active mountain');
-    console.log(this.nextMountTain, 'next mountain');
-
     if (this.activeMountain === this.nextMountTain) {
       this.openIsland(this.nextMountTain);
     }
@@ -67,7 +65,6 @@ export class FloatingIslandComponent implements AfterViewInit {
       // this.openIsland(6);
 
       this.scene.add(this.avatar);
-      this.camera.lookAt(0, 0, 0);
       this.directionalLight.intensity = 4;
     }
   }
@@ -150,19 +147,18 @@ export class FloatingIslandComponent implements AfterViewInit {
   private loadModel() {
     this.scene.background = this.textureLoader.load('assets/test/sky.jpg');
     this.loaderGLTF.load(
-      'assets/test/Map_Floating_Island_Group.gltf',
+      'assets/test/Map_Floating_Island.gltf',
       (gltf: GLTF) => {
+        gltf.scene.scale.set(.5, .5, .5);
         this.model = gltf.scene;
-        console.log(gltf.scene);
-        gltf.scene.traverse((child) => {
-          if (child instanceof THREE.Mesh) {
-            child.material = child.material.clone();
-            this.sceneMeshes.push(child);
-          }
-        });
+        // gltf.scene.traverse((child) => {
+        //   if (child instanceof THREE.Mesh) {
+        //     child.material = child.material.clone();
+        //     this.sceneMeshes.push(child);
+        //   }
+        // });
 
         this.objectsToTest = [...gltf.scene.children];
-        this.sceneMeshes.push(gltf.scene);
 
         this.smartCityIsland = this.model.getObjectByName(
           this.SMART_CITY_ISLAND
@@ -178,6 +174,12 @@ export class FloatingIslandComponent implements AfterViewInit {
           this.oceanIsland,
           this.forestIsland
         );
+        this.smartCityIsland.traverse(child => {
+          if (child instanceof THREE.Mesh) {
+            child.material = child.material.clone();
+            this.sceneMeshes.push(child)
+          }
+        })
         this.turnOffIsland(this.mountainIsland);
         this.turnOffIsland(this.midRockIsland);
         this.turnOffIsland(this.oceanIsland);
@@ -206,9 +208,14 @@ export class FloatingIslandComponent implements AfterViewInit {
 
         this.mixer = new THREE.AnimationMixer(this.avatar);
         this.mixer.clipAction(animations[0]).play();
-        this.avatar.position.set(-1, -0.8, -2);
-        this.avatar.scale.set(0.5, 0.5, 0.5);
+        this.avatar.position.set(-1, -0.6, -2);
+        this.avatar.scale.set(1, 0.5, 0.5);
         this.avatar.rotation.z = Math.PI;
+
+      },
+      (status) => {
+        console.log(status);
+        
       }
     );
   }
@@ -232,7 +239,7 @@ export class FloatingIslandComponent implements AfterViewInit {
   private turnOffIsland(island: THREE.Group): void {
     island.traverse((child: any) => {
       if (child instanceof THREE.Mesh) {
-        child.material.opacity = 0.4;
+        child.material.opacity = 0.2;
         child.material.transparent = true;
       }
     });
@@ -241,8 +248,10 @@ export class FloatingIslandComponent implements AfterViewInit {
     const nextIsland = this.islands[islandIndex];
     nextIsland.traverse((child: any) => {
       if (child instanceof THREE.Mesh) {
+        child.material = child.material.clone();
         child.material.opacity = 1;
         child.material.transparent = true;
+        this.sceneMeshes.push(child);
       }
     });
   }
@@ -294,9 +303,9 @@ export class FloatingIslandComponent implements AfterViewInit {
       0.1,
       100
     );
-    this.camera.position.x = 1;
-    this.camera.position.y = 1;
-    this.camera.position.z = 2;
+    this.camera.position.x = 4;
+    this.camera.position.y = 4;
+    this.camera.position.z = 15;
     this.scene.add(this.camera);
   }
 
@@ -337,19 +346,19 @@ export class FloatingIslandComponent implements AfterViewInit {
       if (intersects.length) {
         if (this.currentIntersect == null) {
           document.documentElement.style.cursor = 'pointer';
+          console.log('mouse enter');
+          
         }
         this.currentIntersect = intersects[0];
       } else {
         if (this.currentIntersect) {
           document.documentElement.style.cursor = 'auto';
+          console.log('mouse leave');
+          
         }
         this.currentIntersect = null;
       }
     }
-    // if (this.testAnimation) {
-    //   this.testAnimation.position.x = Math.sin(elapsedTime * 0.6) * 3
-    //   // this.testAnimation.position.z = Math.cos(elapsedTime * 0.6) * 3
-    // }
     // // Render
     this.renderer.render(this.scene, this.camera);
 
