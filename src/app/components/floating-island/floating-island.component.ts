@@ -12,6 +12,7 @@ import * as dat from 'lil-gui';
 import { GLTFLoader, GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../light/dialog/dialog.component';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
 @Component({
   selector: 'app-floating-island',
@@ -106,10 +107,14 @@ export class FloatingIslandComponent implements AfterViewInit {
   textureLoader = new THREE.TextureLoader();
   colladaLoader = new ColladaLoader();
   avatar: any;
+  dracoLoader = new DRACOLoader()
+
 
   constructor(public dialog: MatDialog) {}
 
   ngAfterViewInit(): void {
+    this.dracoLoader.setDecoderPath('assets/draco/')
+    this.loaderGLTF.setDRACOLoader(this.dracoLoader);
     /**
      * Lights
      */
@@ -147,7 +152,7 @@ export class FloatingIslandComponent implements AfterViewInit {
   private loadModel() {
     this.scene.background = this.textureLoader.load('assets/test/sky.jpg');
     this.loaderGLTF.load(
-      'assets/test/Map_Floating_Island.gltf',
+      'assets/test3/Map_Floating_Island.gltf',
       (gltf: GLTF) => {
         gltf.scene.scale.set(.5, .5, .5);
         this.model = gltf.scene;
