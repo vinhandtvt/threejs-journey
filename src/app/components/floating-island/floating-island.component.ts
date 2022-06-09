@@ -24,11 +24,11 @@ export class FloatingIslandComponent implements AfterViewInit {
 
   @HostListener('window:resize', ['$event']) resize() {
     // Update camera
-    this.camera.aspect = this.canvas.clientWidth / this.canvas.clientHeight;
+    this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
 
     // Update renderer
-    this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   }
 
@@ -38,7 +38,7 @@ export class FloatingIslandComponent implements AfterViewInit {
   }
 
   @HostListener('click', ['$event']) onclick(event: MouseEvent): void {
-    const currentIslandName = this.currentIntersect.object.parent.name;
+    const currentIslandName = this.currentIntersect?.object?.parent?.name;
     switch (currentIslandName) {
       case this.SMART_CITY_ISLAND:
         this.nextMountTain = 1;

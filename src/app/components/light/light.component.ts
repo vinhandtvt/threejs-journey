@@ -2,14 +2,9 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  HostListener,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import * as THREE from 'three';
-import * as dat from 'lil-gui';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { Sizes } from 'src/app/directive/size.component';
 import { World } from 'src/app/components/light/World/World.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from './dialog/dialog.component';

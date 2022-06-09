@@ -5,6 +5,7 @@ import { HauntedHouseComponent } from './components/haunted-house/haunted-house.
 import { InteractiveLinesComponent } from './components/interactive-lines/interactive-lines.component';
 import { LightComponent } from './components/light/light.component';
 import { ShadowsComponent } from './components/shadows/shadows.component';
+import { ThreeComponent } from './components/three/three.component';
 
 
 const routes: Routes = [
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path: 'floating-island',
     component: FloatingIslandComponent
+  },
+  {
+    path: 'three',
+    component: ThreeComponent
   },
   {
     path: 'interactive-lines',

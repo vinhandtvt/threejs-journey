@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { DialogComponent } from './components/light/dialog/dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ThreeComponent } from './components/three/three.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     FloatingIslandComponent,
     InteractiveLinesComponent,
     DialogComponent,
+    ThreeComponent,
   ],
   imports: [
     BrowserModule,
