@@ -7,6 +7,7 @@ import { Renderer } from "./Renderer.component";
 import { World } from "./World/World.component";
 import { Resources } from "./Utils/Resources.component";
 import { Sources } from "./sources.component";
+import { Debug } from "./Utils/Debug.component";
 
 
 @Directive()
@@ -19,6 +20,7 @@ export class Experience {
   renderer!: Renderer;
   world!: World;
   resources!: Resources;
+  debug!: Debug;
 
   constructor(canvas: HTMLCanvasElement) {    
 
@@ -26,6 +28,7 @@ export class Experience {
     this.canvas = canvas;
 
     // Setup
+    this.debug = new Debug();
     this.sizes = new Sizes();
     
     // resize event
@@ -66,6 +69,7 @@ export class Experience {
 
   private update(): void {
     this.camera.update();
+    this.world.update();
     this.renderer.update()
     
   }

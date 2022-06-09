@@ -9,12 +9,18 @@ export class Environment {
   sunLight!: THREE.DirectionalLight;
   resources!: Resources
   environmentMap: any;
+  debug!: any;
 
   constructor(experience: Experience) {
     this.experience = experience;
     this.scene = this.experience.scene;
     this.resources = this.experience.resources;
-    console.log(this.resources);
+    this.debug = this.experience.debug;
+
+    //Debug
+    if (this.debug.active) {
+      this.debug.active = false;
+    }
     
     this.setSunLight();
     if (this.resources) {
@@ -42,9 +48,14 @@ export class Environment {
 
     this.environmentMap.updateMaterial = () => {
       this.scene.traverse((child) => {
-        console.log(child, 'traverse child');
+        if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
+          child.material.envMap = this.environmentMap.texture;
+          child.material.envMapIntensity = this.environmentMap.intensity;
+          child.material.needsUpdate = true;
+        }
         
       })
     }
+    this.environmentMap.updateMaterial();
   }
 }
